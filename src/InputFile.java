@@ -25,13 +25,14 @@ public class InputFile {
                 for (int i = 0; i <= num; i++) {
                     if (ch == letters[i]) {
                         char resLet = letters[i];
-                        if (resLet == letters[num - plusLetters + 1])
-                            fw.append(letters[0]);
-                        else if (resLet == letters[num - plusLetters + 2])
-                            fw.append(letters[1]);
-                        else if (resLet == letters[num])
-                            fw.append(letters[2]);
-                        else fw.append(letters[i + plusLetters]);
+                        if(i <= num - plusLetters)
+                            fw.append(letters[i + plusLetters]);
+                        else {
+                            for (int j = 0; j < plusLetters; j++) {
+                                if (resLet == letters[num - plusLetters + j + 1])
+                                    fw.append(letters[j]);
+                            }
+                        }
                     }
                 }
             }
@@ -48,13 +49,14 @@ public class InputFile {
                 for (int i = 0; i <= num; i++) {
                     if (ch == letters[i]) {
                         char resLet = letters[i];
-                        if (resLet == letters[0])
-                            fw.append(letters[num - plusLetters + 1]);
-                        else if (resLet == letters[1])
-                            fw.append(letters[num - plusLetters + 2]);
-                        else if (resLet == letters[2])
-                            fw.append(letters[num]);
-                        else fw.append(letters[i - plusLetters]);
+                        if(i >= plusLetters)
+                            fw.append(letters[i - plusLetters]);
+                        else {
+                            for (int j = 0; j < plusLetters; j++) {
+                                if (resLet == letters[j])
+                                    fw.append(letters[num - plusLetters + j + 1]);
+                            }
+                        }
                     }
                 }
             }
@@ -62,9 +64,12 @@ public class InputFile {
     }
 
     public static void main(String[] args) throws IOException {
+        Scanner enter = new Scanner(System.in);
+        System.out.println("Введіть число, яке вказує на кількість позицій праворуч(+) або ліворуч(-) від літери для шифрування та дешифрування: ");
+        int number = enter.nextInt();
         InputFile file = new InputFile();
-        file.coder(3);
-        file.decoder(3);
+        file.coder(number);
+        file.decoder(number);
 
     }
 }

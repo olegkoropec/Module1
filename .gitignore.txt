@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 *.txt
 .idea/
 out/
 *.iml
+=======
+*.class
+/target
+*.xml
+.idea/
+>>>>>>> newBranch

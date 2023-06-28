@@ -1,9 +1,12 @@
 import java.io.IOException;
 
 public class Main {
-
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         Menu menu = new Menu();
-        menu.run();
+        try {
+            menu.run();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

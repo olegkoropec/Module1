@@ -1,39 +1,37 @@
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 public class Algorithms {
-    Character[] letters = {'.', ',', '”', ':', '-', '—', '!', '?', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    List<Character> list = Arrays.asList('.', ',', '”', ':', '-', '—', '!', '?', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Е', 'Є', 'Ж', 'З', 'И', 'І', 'Ї', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ь', 'Ю', 'Я',
-            'а', 'б', 'в', 'г', 'ґ', 'д', 'е', 'є', 'ж', 'з', 'и', 'і', 'ї', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ю', 'я'};
+            'а', 'б', 'в', 'г', 'ґ', 'д', 'е', 'є', 'ж', 'з', 'и', 'і', 'ї', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ю', 'я');
 
-    int lengthOfArray = letters.length - 1;
+    int length = list.size() - 1;
     int numberForDecoder = 0;
     int sizeOfFile = 0;
-    int characterForDecoding = 222;
+    char characterForDecoding = 222;
 
-    public void coder(int moveLetters, String inputFileCode, String outputFileCode) throws IOException {
+    public void encoderFile(int moveLetters, String inputFileCode, String outputFileCode) throws IOException {
         try (FileReader fileReader = new FileReader(inputFileCode);
              FileWriter fileWriter = new FileWriter(outputFileCode)) {
             while (fileReader.ready()) {
                 sizeOfFile++;
                 char ch = (char) fileReader.read();
-                for (int i = 0; i <= lengthOfArray; i++) {
-                    if (ch == letters[i]) {
-                        char resLet = letters[i];
-                        if (i <= lengthOfArray - moveLetters)
-                            fileWriter.append(letters[i + moveLetters]);
-                        else {
-                            for (int j = 0; j < moveLetters; j++) {
-                                if (resLet == letters[lengthOfArray - moveLetters + j + 1])
-                                    fileWriter.append(letters[j]);
-                            }
-                        }
+                int index = list.indexOf(ch);
+                if (list.contains(ch) && index <= length - moveLetters)
+                    fileWriter.append(list.get(index + moveLetters));
+                else {
+                    for (int j = 0; j < moveLetters; j++) {
+                        if (ch == list.get(length - moveLetters + j + 1))
+                            fileWriter.append(list.get(j));
                     }
                 }
             }
             for (int i = 0; i < moveLetters; i++) {
-                fileWriter.append((char) 222);
+                fileWriter.append(characterForDecoding);
                 numberForDecoder++;
             }
         }
@@ -52,23 +50,18 @@ public class Algorithms {
         return moveLetters;
     }
 
-    public void decoder(String inputFileDecode, String outputFileDecode) throws IOException {
+    public void decoderFile(String inputFileDecode, String outputFileDecode) throws IOException {
         int moveLetters = keyMethod(inputFileDecode);
         try (FileReader fileReader = new FileReader(inputFileDecode);
              FileWriter fileWriter = new FileWriter(outputFileDecode)) {
             while (fileReader.ready()) {
                 char characterOfFileReader = (char) fileReader.read();
-                for (int i = 0; i <= lengthOfArray; i++) {
-                    if (characterOfFileReader == letters[i] && (int) characterOfFileReader != characterForDecoding) {
-                        char correctCharacter = letters[i];
-                        if (i >= moveLetters)
-                            fileWriter.append(letters[i - moveLetters]);
-                        else {
-                            for (int j = 0; j < moveLetters; j++) {
-                                if (correctCharacter == letters[j])
-                                    fileWriter.append(letters[lengthOfArray - moveLetters + j + 1]);
-                            }
-                        }
+                if (list.contains(characterOfFileReader) && (int) characterOfFileReader != characterForDecoding && list.indexOf(characterOfFileReader) >= moveLetters)
+                    fileWriter.append(list.get(list.indexOf(characterOfFileReader) - moveLetters));
+                else {
+                    for (int j = 0; j < moveLetters; j++) {
+                        if (characterOfFileReader == list.get(j))
+                            fileWriter.append(list.get(length - moveLetters + j + 1));
                     }
                 }
             }

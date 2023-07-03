@@ -14,15 +14,19 @@ public class Menu {
     public boolean isRunning = true;
     Algorithms file = new Algorithms();
 
-    public void run() throws IOException {
+    public void run() {
         Scanner menuScanner = new Scanner(System.in);
         while (isRunning) {
             System.out.println(MENU_INFO);
             int itemMenu = menuScanner.nextInt();
-            switch (itemMenu) {
-                case EXIT_NUMBER -> methodExit();
-                case ENCODE_FILE -> methodEncode();
-                case DECODE_FILE -> methodDecode();
+            try {
+                switch (itemMenu) {
+                    case EXIT_NUMBER -> methodExit();
+                    case ENCODE_FILE -> methodEncode();
+                    case DECODE_FILE -> methodDecode();
+                }
+            } catch (IOException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
@@ -42,7 +46,7 @@ public class Menu {
         String readFile = inputFileScanner.nextLine();
         System.out.println("Enter the full name of the file where you want to save the encoded code");
         String writeEncodingFile = outputFileScanner.nextLine();
-        file.coder(key, readFile, writeEncodingFile);
+        file.encoderFile(key, readFile, writeEncodingFile);
     }
 
     public void methodDecode() throws IOException {
@@ -52,6 +56,6 @@ public class Menu {
         String readFile = inputFileScanner.nextLine();
         System.out.println("Enter the full name of the file where the decoded text should be saved");
         String writeDecodingFile = outputFileScanner.nextLine();
-        file.decoder(readFile, writeDecodingFile);
+        file.decoderFile(readFile, writeDecodingFile);
     }
 }

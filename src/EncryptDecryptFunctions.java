@@ -4,31 +4,27 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-public class Algorithms {
-    List<Character> list = Arrays.asList('.', ',', '”', ':', '-', '—', '!', '?', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+public class EncryptDecryptFunctions {
+    private final List<Character> characterList = Arrays.asList('.', ',', '”', ':', '-', '—', '!', '?', ' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Е', 'Є', 'Ж', 'З', 'И', 'І', 'Ї', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ь', 'Ю', 'Я',
             'а', 'б', 'в', 'г', 'ґ', 'д', 'е', 'є', 'ж', 'з', 'и', 'і', 'ї', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ь', 'ю', 'я');
 
-    int length = list.size() - 1;
-    int numberForDecoder = 0;
-    int sizeOfFile = 0;
-    char characterForDecoding = 222;
+    private final int length = characterList.size() - 1;
+    private int numberForDecoder = 0;
+    private int sizeOfFile = 0;
+    private final char characterForDecoding = 222;
 
     public void encoderFile(int moveLetters, String inputFileCode, String outputFileCode) throws IOException {
         try (FileReader fileReader = new FileReader(inputFileCode);
              FileWriter fileWriter = new FileWriter(outputFileCode)) {
             while (fileReader.ready()) {
                 sizeOfFile++;
-                char ch = (char) fileReader.read();
-                int index = list.indexOf(ch);
-                if (list.contains(ch) && index <= length - moveLetters)
-                    fileWriter.append(list.get(index + moveLetters));
-                else {
-                    for (int j = 0; j < moveLetters; j++) {
-                        if (ch == list.get(length - moveLetters + j + 1))
-                            fileWriter.append(list.get(j));
-                    }
-                }
+                char characterOfFileReader = (char) fileReader.read();
+                int index = characterList.indexOf(characterOfFileReader);
+                if (characterList.contains(characterOfFileReader) && index <= length - moveLetters)
+                    fileWriter.append(characterList.get(index + moveLetters));
+                else
+                    fileWriter.append(characterList.get(index + moveLetters - length - 1));
             }
             for (int i = 0; i < moveLetters; i++) {
                 fileWriter.append(characterForDecoding);
@@ -56,14 +52,11 @@ public class Algorithms {
              FileWriter fileWriter = new FileWriter(outputFileDecode)) {
             while (fileReader.ready()) {
                 char characterOfFileReader = (char) fileReader.read();
-                if (list.contains(characterOfFileReader) && (int) characterOfFileReader != characterForDecoding && list.indexOf(characterOfFileReader) >= moveLetters)
-                    fileWriter.append(list.get(list.indexOf(characterOfFileReader) - moveLetters));
-                else {
-                    for (int j = 0; j < moveLetters; j++) {
-                        if (characterOfFileReader == list.get(j))
-                            fileWriter.append(list.get(length - moveLetters + j + 1));
-                    }
-                }
+                int index = characterList.indexOf(characterOfFileReader);
+                if (characterList.contains(characterOfFileReader) && (int) characterOfFileReader != characterForDecoding && index >= moveLetters)
+                    fileWriter.append(characterList.get(index - moveLetters));
+                else
+                    fileWriter.append(characterList.get(index - moveLetters + length + 1));
             }
         }
     }

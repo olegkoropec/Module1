@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Menu {
+public class EncryptDecryptTool{
     public static final int EXIT_NUMBER = 0;
     public static final int ENCODE_FILE = 1;
     public static final int DECODE_FILE = 2;
@@ -12,9 +12,9 @@ public class Menu {
                     0. Exit
                     """;
     public boolean isRunning = true;
-    Algorithms file = new Algorithms();
+    EncryptDecryptFunctions file = new EncryptDecryptFunctions();
 
-    public void run() {
+    public void perform() {
         Scanner menuScanner = new Scanner(System.in);
         while (isRunning) {
             System.out.println(MENU_INFO);
